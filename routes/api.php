@@ -31,15 +31,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'user'], function () {
     Route::post('login', [UserApiController::class,'login']);
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware('jwt.verify')->group(function () {
         Route::get('profile',[UserApiController::class,'getProfile']);
     });
 });
 
-Route::group(['prefix' => 'admin'], function () {
-    
+ Route::group(['prefix' => 'admin'], function () { 
     Route::post('login', [AdminApiController::class,'login']);
-    Route::middleware(['auth:admin-api'])->group(function () {
+    Route::middleware(['jwt.verify'])->group(function () {
         Route::get('users',[AdminApiController::class,'getUsersList']);
     });
 });
+
+// Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin-api'], function () {
+//     Route::get('users', [AdminApiController::class, 'getUsersList']);
+// });

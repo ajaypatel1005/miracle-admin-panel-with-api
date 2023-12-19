@@ -45,7 +45,14 @@ class AdminApiController extends Controller
 
     public function getUsersList()
     {
+        try
+        {
         $user = User::get();
         return response()->json(['user' => $user]);
+        }
+        catch(Exception $e)
+        {
+            return ResponseHelper::errorResponse(['Something went wrong!!']);
+        }
     }
 }
